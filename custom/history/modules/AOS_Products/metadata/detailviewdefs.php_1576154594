@@ -1,0 +1,155 @@
+<?php
+// created: 2012-07-25 14:25:55
+$viewdefs['AOS_Products']['DetailView'] = array (
+  'templateMeta' => 
+  array (
+    'maxColumns' => '2',
+    'widths' => 
+    array (
+      0 => 
+      array (
+        'label' => '10',
+        'field' => '30',
+      ),
+      1 => 
+      array (
+        'label' => '10',
+        'field' => '30',
+      ),
+    ),
+  ),
+  'panels' => 
+  array (
+    'default' => 
+    array (
+      0 => 
+      array (
+        0 => 'name',
+        1 => 'status',
+      ),
+      1 => 
+      array (
+        0 => 'quote_name',
+        1 => 'contact_name',
+      ),
+      2 => 
+      array (
+        0 => 
+        array (
+          'name' => 'account_name',
+          'customCode' => '{$ACCOUNT_NAME}',
+        ),
+      ),
+      3 => 
+      array (
+      	0 =>
+      	array (
+      		'name' => 'quantity',
+      		'customCode' => '{$fields.quantity.value}&nbsp;{$fields.unit_measure_name.value}',
+      	),
+        1 => 'date_purchased',
+      ),
+      4 => 
+      array (
+        0 => 'serial_number',
+        1 => 'date_support_starts',
+      ),
+      5 => 
+      array (
+        0 => 'asset_number',
+        1 => 'date_support_expires',
+      ),
+    ),
+    0 => 
+    array (
+      0 => 
+      array (
+        0 => 'currency_id',
+      ),
+      1 => 
+      array (
+        0 => 
+        array (
+          'name' => 'cost_price',
+          'label' => '{$MOD.LBL_COST_PRICE|strip_semicolon} ({$CURRENCY})',
+        ),
+        1 => 
+        array (
+          'name' => 'list_price',
+          'customLabel' => '{$MOD.LBL_MARK_UP}&nbsp;&nbsp;&nbsp;{$MOD.LBL_IN_PERCENTAGE}<input type="checkbox" name="markup_inper" id="markup_inper" value="1" disabled="disabled" {if $fields.markup_inper.value==1}checked="checked"{/if}>',
+        ),
+      ),
+      2 => 
+      array (
+        0 => 
+        array (
+          'name' => 'book_value',
+          'label' => '{$MOD.LBL_BOOK_VALUE|strip_semicolon} ({$CURRENCY})',
+        ),
+      ),
+      3 => 
+      array (
+        0 => 
+        array (
+          'name' => 'discount_price',
+          'label' => '{$MOD.LBL_DISCOUNT_PRICE|strip_semicolon} ({$CURRENCY})',
+        ),
+        1 => 'book_value_date',
+      ),
+      4 => 
+      array (
+        0 => 
+        array (
+          'name' => 'discount_amount',
+          'customCode' => '{if $fields.discount_select.value}{sugar_number_format var=$fields.discount_amount.value}%{else}{$fields.currency_symbol.value}{sugar_number_format var=$fields.discount_amount.value}{/if}',
+        ),
+        1 => '',
+      ),
+    ),
+    1 => 
+    array (
+      0 => 
+      array (
+        0 => 
+        array (
+          'name' => 'website',
+          'type' => 'link',
+        ),
+        1 => 'tax_class',
+      ),
+      1 => 
+      array (
+        0 => 'manufacturer_name',
+        1 => 'weight',
+      ),
+      2 => 
+      array (
+        0 => 'mft_part_num',
+        1 => 
+        array (
+          'name' => 'category_name',
+          'type' => 'text',
+        ),
+      ),
+      3 => 
+      array (
+        0 => 'vendor_part_num',
+        1 => 'type_name',
+      ),
+      4 => 
+      array (
+        0 => 'description',
+      ),
+      5 => 
+      array (
+        0 => 'support_name',
+        1 => 'support_contact',
+      ),
+      6 => 
+      array (
+        0 => 'support_description',
+        1 => 'support_term',
+      ),
+    ),
+  ),
+);

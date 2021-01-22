@@ -1,0 +1,12 @@
+<?php
+//THIS FILE IS AUTO GENERATED, DO NOT MODIFY
+$mod_strings['LBL_LEAD_LEADCLIENTDETAILS_FROM_LEADS_TITLE'] = 'oss_LeadClientDetail';
+$mod_strings['LBL_LEAD_LEADCLIENTDETAILS_FROM_OSS_LEADCLIENTDETAIL_TITLE'] = 'oss_LeadClientDetail';
+$mod_strings['LBL_LEAD_DIRECT_REPORTS_FROM_LEADS_L_TITLE'] = 'Leads';
+$mod_strings['LBL_LEAD_DIRECT_REPORTS_FROM_LEADS_R_TITLE'] = 'Leads';
+$mod_strings['LBL_LEAD_TO_LEAD_FROM_LEADS_L_TITLE'] = 'Leads';
+$mod_strings['LBL_LEAD_TO_LEAD_FROM_LEADS_R_TITLE'] = 'Leads';
+$mod_strings['LBL_LEADS_ONLINE_PLANS_FROM_LEADS_TITLE'] = 'oss_OnlinePlans';
+$mod_strings['LBL_LEADS_ONLINE_PLANS_FROM_OSS_ONLINEPLANS_TITLE'] = 'oss_OnlinePlans';
+$mod_strings['LBL_OSS_CLASSIFCATION_LEADS_FROM_LEADS_TITLE'] = 'oss_Classification';
+$mod_strings['LBL_OSS_CLASSIFCATION_LEADS_FROM_OSS_CLASSIFICATION_TITLE'] = 'oss_Classification';

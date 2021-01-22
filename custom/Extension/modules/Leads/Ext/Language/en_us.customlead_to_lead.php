@@ -1,0 +1,5 @@
+<?php
+//THIS FILE IS AUTO GENERATED, DO NOT MODIFY
+$mod_strings['LBL_LEAD_TO_LEAD_FROM_LEADS_L_TITLE'] = 'Leads';
+$mod_strings['LBL_LEAD_TO_LEAD_FROM_LEADS_R_TITLE'] = 'Leads';
+$mod_strings['LBL_LEADS_ONLINE_PLAN_SUBPANEL_TITLE'] = 'Online Plans';

@@ -1,0 +1,4 @@
+<?php
+//THIS FILE IS AUTO GENERATED, DO NOT MODIFY
+$mod_strings['LBL_LEADS_ONLINE_PLANS_FROM_LEADS_TITLE'] = 'oss_OnlinePlans';
+$mod_strings['LBL_LEADS_ONLINE_PLANS_FROM_OSS_ONLINEPLANS_TITLE'] = 'oss_OnlinePlans';

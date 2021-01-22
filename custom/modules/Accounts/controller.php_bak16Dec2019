@@ -1,0 +1,13 @@
+<?php
+
+class AccountsController extends SugarController{
+	
+	function action_master_lookup(){
+	    $this->view = 'master_lookup';
+	}
+	
+	function action_import_client(){
+	    $this->view = 'import_client';
+	}
+	
+} 

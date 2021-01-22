@@ -1,0 +1,200 @@
+<?php
+$module_name = 'AOS_Products';
+$viewdefs [$module_name] = 
+array (
+  'DetailView' => 
+  array (
+    'templateMeta' => 
+    array (
+      'maxColumns' => '2',
+      'widths' => 
+      array (
+        0 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+        1 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+      ),
+      'useTabs' => false,
+      'tabDefs' => 
+      array (
+        'DEFAULT' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL1' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL2' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+      ),
+      'syncDetailEditViews' => true,
+    ),
+    'panels' => 
+    array (
+      'default' => 
+      array (
+        0 => 
+        array (
+          0 => 'name',
+          1 => 'status',
+        ),
+        1 => 
+        array (
+          0 => '',
+          1 => 
+          array (
+            'name' => 'contact',
+            'label' => 'LBL_CONTACT',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'quantity',
+            'customCode' => '{$fields.quantity.value}&nbsp;{$fields.unit_measure_name.value}',
+          ),
+          1 => 
+          array (
+            'name' => 'unit_measure',
+            'comment' => '',
+            'label' => 'LBL_UNIT_MEASURE',
+          ),
+        ),
+        3 => 
+        array (
+          0 => 'serial_number',
+          1 => 'date_support_starts',
+        ),
+        4 => 
+        array (
+          0 => 'asset_number',
+          1 => 'date_support_expires',
+        ),
+      ),
+      'lbl_editview_panel1' => 
+      array (
+        0 => 
+        array (
+          0 => 'currency_id',
+          1 => '',
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'cost_price',
+            'label' => '{$MOD.LBL_COST_PRICE|strip_semicolon} ({$CURRENCY})',
+          ),
+          1 => 
+          array (
+            'name' => 'list_price',
+            'customLabel' => '{$MOD.LBL_MARK_UP}&nbsp;&nbsp;&nbsp;{$MOD.LBL_IN_PERCENTAGE}<input type="checkbox" name="markup_inper" id="markup_inper" value="1" disabled="disabled" {if $fields.markup_inper.value==1}checked="checked"{/if}>',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'book_value',
+            'label' => '{$MOD.LBL_BOOK_VALUE|strip_semicolon} ({$CURRENCY})',
+          ),
+          1 => '',
+        ),
+        3 => 
+        array (
+          0 => 
+          array (
+            'name' => 'discount_price',
+            'label' => '{$MOD.LBL_DISCOUNT_PRICE|strip_semicolon} ({$CURRENCY})',
+          ),
+          1 => 'book_value_date',
+        ),
+        4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'discount_amount',
+            'customCode' => '{if $fields.discount_select.value}{sugar_number_format var=$fields.discount_amount.value}%{else}{$fields.currency_symbol.value}{sugar_number_format var=$fields.discount_amount.value}{/if}',
+          ),
+          1 => 
+          array (
+            'name' => 'discount_select',
+            'label' => 'Discount in %',
+          ),
+        ),
+      ),
+      'lbl_editview_panel2' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'website',
+            'type' => 'link',
+          ),
+          1 => 'tax_class',
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'manufacturer_id',
+            'studio' => 'true',
+            'comment' => 'Manufacturer of product',
+            'label' => 'Manufacturer',
+          ),
+          1 => 'weight',
+        ),
+        2 => 
+        array (
+          0 => 'mft_part_num',
+          1 => 
+          array (
+            'name' => 'category',
+            'studio' => 'visible',
+            'label' => 'LBL_CATEGORY',
+          ),
+        ),
+        3 => 
+        array (
+          0 => 'vendor_part_num',
+          1 => 
+          array (
+            'name' => 'type_id_c',
+            'studio' => 'visible',
+            'label' => 'LBL_TYPE_ID',
+          ),
+        ),
+        4 => 
+        array (
+          0 => 'description',
+        ),
+        5 => 
+        array (
+          0 => 'support_name',
+          1 => 'support_contact',
+        ),
+        6 => 
+        array (
+          0 => 'support_description',
+          1 => 'support_term',
+        ),
+      ),
+    ),
+  ),
+);
+;
+?>

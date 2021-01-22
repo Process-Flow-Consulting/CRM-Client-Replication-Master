@@ -1,0 +1,20 @@
+<?php
+$admin_option_defs = array();
+/* $admin_option_defs['Administration']['AOR_Reports'] = array('AOR_Reports', 'LNK_CREATE_REPORT', 'LNK_CREATE_REPORT_INFO', './index.php?module=AOR_Reports&report_module=&action=index&page=report&Create+Custom+Report=Create+Custom+Report');
+$admin_option_defs['Administration']['oss_Zone'] = array('oss_Zone', 'LNK_CREATE_ZONE', 'LNK_CREATE_ZONE_INFO', './index.php?module=oss_Zone&action=EditView&return_module=oss_Zone&return_action=DetailView');
+$admin_group_header[] = array('LBL_REPORTS_TITLE', '', faLse, $admin_option_defs, 'LNK_REPORT_DISC'); */
+
+$admin_option_defs = array();
+$admin_option_defs['Administration']['view_custom_field'] = array('Administration', 'LBL_CREATE_CUSTOM_FIELDS', 'LBL_CREATE_CUSTOM_FIELDS_SETTINGS_INFO', './index.php?module=Administration&action=viewcustomfields&return_module=Administration&return_action=index');
+$admin_group_header[] = array('LBL_BLUE_BOOK_CUSTOM_FIELDS', '', faLse, $admin_option_defs, 'LBL_BLUE_BOOK_CUSTOM_FIELDS_MANAGE');
+
+//overwrite existing products and quotes listing
+$admin_group_header[3][3]['Quotes']['unit_of_measure'] = Array(
+    'oss_UnitOfMeasure',
+    'LNK_INSERT_UNIT_OF_MEASURE',
+    'LBL_INSERT_UNIT_OF_MEASURE',
+    './index.php?module=oss_UnitOfMeasure&action=index',
+	'releases'
+);
+
+?>

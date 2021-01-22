@@ -1,0 +1,361 @@
+<?php
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+
+/*********************************************************************************
+ * The contents of this file are subject to the SugarCRM Master Subscription
+ * Agreement ("License") which can be viewed at
+ * http://www.sugarcrm.com/crm/en/msa/master_subscription_agreement_11_April_2011.pdf
+ * By installing or using this file, You have unconditionally agreed to the
+ * terms and conditions of the License, and You may not use this file except in
+ * compliance with the License.  Under the terms of the license, You shall not,
+ * among other things: 1) sublicense, resell, rent, lease, redistribute, assign
+ * or otherwise transfer Your rights to the Software, and 2) use the Software
+ * for timesharing or service bureau purposes such as hosting the Software for
+ * commercial gain and/or for the benefit of a third party.  Use of the Software
+ * may be subject to applicable fees and any use of the Software without first
+ * paying applicable fees is strictly prohibited.  You do not have the right to
+ * remove SugarCRM copyrights from the source code or user interface.
+ *
+ * All copies of the Covered Code must include on each user interface screen:
+ *  (i) the "Powered by SugarCRM" logo and
+ *  (ii) the SugarCRM copyright notice
+ * in the same form as they appear in the distribution.  See full license for
+ * requirements.
+ *
+ * Your Warranty, Limitations of liability and Indemnity are expressly stated
+ * in the License.  Please refer to the License for the specific language
+ * governing these rights and limitations under the License.  Portions created
+ * by SugarCRM are Copyright (C) 2004-2011 SugarCRM, Inc.; All Rights Reserved.
+ ********************************************************************************/
+
+/*********************************************************************************
+
+ * Description: This file is used to override the default Meta-data EditView behavior
+ * to provide customization specific to the Calls module.
+ * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+ * All Rights Reserved.
+ * Contributor(s): ______________________________________..
+ ********************************************************************************/
+
+require_once('include/MVC/View/views/view.detail.php');
+require_once 'custom/include/common_functions.php';
+class AOS_QuotesViewDetail extends ViewDetail 
+{
+    
+	/**
+	 * 
+	 * @see ViewDetail::preDisplay()
+	 */
+	public function preDisplay()
+	{
+		$metadataFile = $this->getMetaDataFile();
+		$this->dv = new DetailView2();
+		$this->dv->ss =&  $this->ss;
+		
+		//added for documents subpanel this will filter the docs 
+		$this->bean->proposal_docs =1;
+		$this->dv->setup($this->module, $this->bean, $metadataFile, 'custom/modules/AOS_Quotes/tpls/DetailView.tpl');
+	}
+	
+	
+    /**
+ 	 * @see SugarView::display()
+ 	 */
+ 	public function display() 
+ 	{
+		global $beanFiles, $app_strings, $db;
+		require_once($beanFiles['AOS_Quotes']);
+		require_once($beanFiles['AOS_Products']);		
+		addPushToQuickBooksButton($this->bean,$this->dv);
+		/** Tax Class -- Added By Hirak **/
+		//get the sales tax settings
+		if(empty($this->bean->sales_tax_flag)){
+		    $salesTaxFlag = salesTaxSettings();
+		}else{
+		    $salesTaxFlag = $this->bean->sales_tax_flag;
+		}
+		$this->ss->assign('SALES_TAX_FLAG', $salesTaxFlag);
+
+		$taxRateId = '';
+		if(empty( $this->bean->taxrate_id) && !empty ($this->bean->fetched_row['taxrate_id']) ){
+		    $taxRateId = $this->bean->fetched_row['taxrate_id'];
+		}else{
+		    $taxRateId = $this->bean->taxrate_id;
+		}
+		$tax_rate = 0.00;
+		$taxRateName = '';
+		if(!empty($taxRateId)){
+    		$sqlTaxRates = "SELECT id, name, value FROM taxrates WHERE deleted = 0 AND status = 'Active' AND id = '".$taxRateId."' ";
+    		$resultTaxRates = $db->query($sqlTaxRates);
+    		$rowTaxRates = $db->fetchByAssoc($resultTaxRates);
+    		if(!empty($rowTaxRates['id'])){
+    		    $tax_rate =  $rowTaxRates['value'];
+    		    $taxRateName = $rowTaxRates['name'];
+    		}else{
+    		    $taxRateTotal = 0.00;
+    		    $sqlTaxGroups = "SELECT id, name FROM oss_itemsalestaxgroup WHERE deleted = 0 AND is_active = '1' AND id = '".$taxRateId."' ";
+    		    $resultTaxGroups = $db->query($sqlTaxGroups);
+    		    $rowTaxGroups = $db->fetchByAssoc($resultTaxGroups);
+    		    if(!empty($rowTaxGroups['id'])){ 
+    		        $taxRateName = $rowTaxGroups['name'];
+    		        $taxGroup = new oss_ItemSalesTaxGroup();
+    		        $taxGroup->retrieve($rowTaxGroups['id']);
+    		        $taxGroup->load_relationship('taxrate_taxgroup');
+    		        $taxRates = $taxGroup->taxrate_taxgroup->get();
+    		        foreach ($taxRates as $taxRate){
+    		            $sqlTaxRates = "SELECT id, value FROM taxrates WHERE deleted = 0 AND status = 'Active' AND id = '".$taxRate."' ";
+    		            $resultTaxRates = $db->query($sqlTaxRates);
+    		            $rowTaxRates = $db->fetchByAssoc($resultTaxRates);
+    		            $taxRateTotal = $taxRateTotal + $rowTaxRates['value'];
+    		        }
+    		        $tax_rate =  $taxRateTotal;
+    		    }
+    		}
+		}
+		
+		$tax_rate = number_format($tax_rate, 2);
+		$this->ss->assign('TAX_RATE', $tax_rate);
+		$this->ss->assign('TAX_RATE_PER', '('.$tax_rate.' %)' );
+		$this->ss->assign('TAX_RATE_NAME', $taxRateName);
+		/** Tax Class -- Added By Hirak **/
+		
+		$product = new AOS_Products();
+		$where_li = " aos_products.quote_id='".$this->bean->id."' AND aos_products.product_type='line_items'";
+		$where_inc = " aos_products.quote_id='".$this->bean->id."' AND aos_products.product_type='inclusions'";
+		$where_exc = " aos_products.quote_id='".$this->bean->id."' AND aos_products.product_type='exclusions'";
+		$where_alt = " aos_products.quote_id='".$this->bean->id."' AND aos_products.product_type='alternates'";
+		$line_items = $product->get_full_list('',$where_li);
+		$inclusions = $product->get_full_list('',$where_inc);
+		$exclusions = $product->get_full_list('',$where_exc);
+		$alternates = $product->get_full_list('',$where_alt);
+		
+		//Get Documents of Proposal
+		//$this->bean->load_relationship('documents');
+		//$docs = $this->bean->documents->get();
+		$docs =0;
+		
+		$line_items_exists = 1;
+		if(count($line_items) == 0 && count($inclusions)==0 && count($exclusions)==0 && count($docs) == 0 && count($alternates) == 0){
+			$line_items_exists = 0;
+		}
+
+		$this->ss->assign('parent_opp','123456');
+		//Get Project Opportunity of AOS_Quotes
+		$opp = new Opportunity();
+		$opp->retrieve($this->bean->opportunity_id);	
+		
+		$this->ss->assign('parent_opp_id',$opp->parent_opportunity_id);
+		$this->ss->assign('line_items', $line_items);
+		$this->ss->assign('inclusions', $inclusions);
+		$this->ss->assign('exclusions', $exclusions);
+		$this->ss->assign('alternates', $alternates);
+		$this->ss->assign('line_items_exists',$line_items_exists);
+				
+		//require_once('modules/AOS_Quotes/Layouts.php');
+		//$this->ss->assign('LAYOUT_OPTIONS', get_select_options_with_id(get_layouts(), ''));
+ 		//@modified By Mohit Kumar Gupta
+ 		//@date 06-01-2014
+ 		//New "Android" check is also added for android devices due to 
+ 		//bug of propsal pdf download on older version of android on default browser.
+ 		//resolved by passing "GET" method instead of post in case of android also. 
+ 		if(!(strpos($_SERVER['HTTP_USER_AGENT'],'Mozilla/5') === false) && (strpos($_SERVER['HTTP_USER_AGENT'],'Android') === false)) {
+			$this->ss->assign('PDFMETHOD', 'POST');
+		} else {
+			$this->ss->assign('PDFMETHOD', 'GET');
+		}
+		
+		//$account_proview_link = $this->setAccountProviewLink($this->bean);
+		$account_proview_link = proview_url(array('url'=>$this->bean->account_proview_url));
+		$account_name = '<a href="index.php?module=Accounts&action=DetailView&record='.$this->bean->account_id.'">'.$this->bean->billing_account_name.'</a>';
+		
+		$this->ss->assign('ACCOUNT_NAME',$account_proview_link.'&nbsp;'.$account_name);		
+		
+		global $app_list_strings, $current_user;
+		//Modified by Mohit Kumar Gupta
+		//for handling markup field start
+		//@date 22-oct-2013
+		require_once('include/utils.php');
+		$thousandSep = $current_user->getPreference("num_grp_sep");
+		$decimalPoint = $current_user->getPreference("dec_sep");
+		$currencySignificantDigit = $current_user->getPreference("default_currency_significant_digits");
+		$percentSign = str_replace("In ",'',translate('LBL_IN_PERCENTAGE', 'ProductTemplates'));
+		$this->ss->assign('PERCENT_SIGN', $percentSign);
+		$this->ss->assign('THOUSAND_SEP', $thousandSep);
+		$this->ss->assign('DECIMAL_POINT', $decimalPoint);
+		$this->ss->assign('CURRENCY_DIGIT', $currencySignificantDigit);
+		//for handling markup field end
+		$this->ss->assign('APP_LIST_STRINGS', $app_list_strings);
+		$this->ss->assign('gridline', $current_user->getPreference('gridline') == 'on' ? '1' : '0');
+
+ 		require_once('include/Sugarpdf/sugarpdf_config.php');
+		if(PDF_CLASS == 'TCPDF') {
+		    $this->dv->defs['templateMeta']['form']['links'] = array('{$MOD.PDF_FORMAT} <select name="sugarpdf" id="sugarpdf">{$LAYOUT_OPTIONS}</select></form>');
+			// Bug 41079 Check User Email Client Type
+			$userPref = $current_user->getPreference('email_link_type');
+            global $sugar_config;
+			$defaultPref = $sugar_config['email_default_client'];
+			if($userPref != '') {
+				$client = $userPref;
+			} else {
+				$client = $defaultPref;
+			}
+			
+			$pdfButtons = '<form action="index.php" method="{$PDFMETHOD}" name="EmailPDF" id="form" onsubmit="this.sugarpdf.value =(document.getElementById(\'sugarpdf\'))? document.getElementById(\'sugarpdf\').value: \'\';"><input type="hidden" name="module" value="AOS_Quotes"><input type="hidden" name="record" value="{$fields.id.value}"><input type="hidden" name="action" value="sugarpdf"><input type="hidden" name="email_action"><input type="hidden" name="sugarpdf">';
+			
+			if ($client != 'sugar') {
+			    
+				$pdfButtons .= '<input title="{$APP.LBL_EMAIL_COMPOSE}" accessKey="{$APP.LBL_EMAIL_PDF_BUTTON_KEY}" class="button" type="submit" name="button" value="{$APP.LBL_EMAIL_COMPOSE}" onclick="location.href=\'mailto:'.$this->bean->contact_email.'?subject='.rawurlencode('Proposal For:'.$this->bean->name).'\';return false;"> </form>';
+				
+			} else {			    				
+			    $pdfButtons .= '<input title="{$APP.LBL_EMAIL_PDF_BUTTON_TITLE}" accessKey="{$APP.LBL_EMAIL_PDF_BUTTON_KEY}" class="button" type="submit" name="button" value="{$APP.LBL_EMAIL_PDF_BUTTON_LABEL}" onclick="return proposalVerify();"> ';				
+			    $pdfButtons .= '{nocache}';
+			    $pdfButtons .= '{sugar_email_btn}';
+			    $pdfButtons .= '{/nocache}</form>';			    		
+			}
+		/**
+		Modified by : Ashutosh
+        Date Modified : 17 Apr 2014
+        Purpose : Removed the $pdfViewButton assignment from else block 
+		*/	
+			$pdfViewButton = '<form action="index.php" method="{$PDFMETHOD}" name="ViewPDF" id="form" onsubmit="this.sugarpdf.value =(document.getElementById(\'sugarpdf\'))? document.getElementById(\'sugarpdf\').value: \'\';"><input type="hidden" name="module" value="AOS_Quotes"><input type="hidden" name="record" value="{$fields.id.value}"><input type="hidden" name="action" value="sugarpdf"><input type="hidden" name="email_action"><input type="hidden" name="sugarpdf">';				
+			$pdfViewButton .= '<input id="print_as_pdf_button" title="{$APP.LBL_VIEW_PDF_BUTTON_TITLE}" class="button" type="submit" name="button" value="{$APP.LBL_VIEW_PDF_BUTTON_LABEL}"></form>';
+			
+			/*$pdfButtons = '<form action="index.php" method="{$PDFMETHOD}" name="ViewPDF" id="form" ><input type="hidden" name="module" value="AOS_Quotes"><input type="hidden" name="record" value="{$fields.id.value}"><input type="hidden" name="action" value="sugarpdf"><input type="hidden" name="email_action">';
+			if ($client != 'sugar') {
+				$pdfButtons .= '<input title="{$APP.LBL_EMAIL_COMPOSE}" accessKey="{$APP.LBL_EMAIL_PDF_BUTTON_KEY}" class="button" type="submit" name="button" value="{$APP.LBL_EMAIL_COMPOSE}" onclick="location.href=\'mailto:\';return false;"> ';
+			} else {
+				$pdfButtons .= '<input title="{$APP.LBL_EMAIL_PDF_BUTTON_TITLE}" accessKey="{$APP.LBL_EMAIL_PDF_BUTTON_KEY}" class="button" type="submit" name="button" value="{$APP.LBL_EMAIL_PDF_BUTTON_LABEL}" onclick="return proposalVerify();"> ';
+			}
+			$pdfButtons .= '<input title="{$APP.LBL_VIEW_PDF_BUTTON_TITLE}" accessKey="{$APP.LBL_VIEW_PDF_BUTTON_KEY}" class="button" type="submit" name="button" value="{$APP.LBL_VIEW_PDF_BUTTON_LABEL}">';*/
+			
+		   /* $this->dv->defs['templateMeta']['form']['buttons'] = array('EDIT', 'DUPLICATE', 'DELETE',
+		        //array('customCode'=>'<form action="index.php" method="POST" name="Quote2Opp" id="form"><input type="hidden" name="module" value="AOS_Quotes"><input type="hidden" name="record" value="{$fields.id.value}"><input type="hidden" name="user_id" value="{$current_user->id}"><input type="hidden" name="team_id" value="{$fields.team_id.value}"><input type="hidden" name="user_name" value="{$current_user->user_name}"><input type="hidden" name="action" value="QuoteToOpportunity"><input type="hidden" name="opportunity_subject" value="{$fields.name.value}"><input type="hidden" name="opportunity_name" value="{$fields.name.value}"><input type="hidden" name="opportunity_id" value="{$fields.billing_account_id.value}"><input type="hidden" name="amount" value="{$fields.total.value}"><input type="hidden" name="valid_until" value="{$fields.date_quote_expected_closed.value}"><input type="hidden" name="currency_id" value="{$fields.currency_id.value}"><input title="{$APP.LBL_QUOTE_TO_OPPORTUNITY_TITLE}" accessKey="{$APP.LBL_QUOTE_TO_OPPORTUNITY_KEY}" class="button" type="submit" name="opp_to_quote_button" value="{$APP.LBL_QUOTE_TO_OPPORTUNITY_LABEL}"></form>'),
+                array('customCode' => '<form action="index.php" method="GET" name="copyProposal" id="form"><input type="hidden" name="module" value="AOS_Quotes"><input type="hidden" name="record" value="{$fields.id.value}"><input type="hidden" name="action" value="copyProposal"><input title="'.$mod_strings['LBL_COPY_PROPOSAL_TITLE'].'" accessKey="'.$mod_strings['LBL_COPY_PROPOSAL_KEY'].'" class="button" type="submit" name="copy_proposal" value="'.$mod_strings['LBL_COPY_PROPOSAL_TITLE'].'"></form>'),
+		        array('customCode'=>$pdfButtons),
+				array('customCode'=>$pdfViewButton),		    				    	
+		    	array('customCode' => '<input type="button" name="btn_proposal_verified" id="btn_proposal_verified" value="Verify Proposal" class="button" onclick="verifyEmail();">')
+		     );	  */
+		     
+			$this->ss->assign('pdfButtons',$pdfButtons);
+			$this->ss->assign('pdfViewButton',$pdfViewButton);
+			
+			//replace button on  detailviewdefs
+			$this->dv->defs['templateMeta']['form']['buttons'][4] =  array('customCode'=>$pdfButtons);
+			$this->dv->defs['templateMeta']['form']['buttons'][5] =  array('customCode'=>$pdfViewButton);
+				
+		}	    
+	
+		require_once 'custom/include/OssTimeDate.php';
+		$oss_timedate = new OssTimeDate();
+		
+		//date time proposal scheduled delivery
+		$date_time_delivery = $oss_timedate->convertDBDateForDisplay($this->bean->date_time_delivery, $this->bean->delivery_timezone, true);
+		$this->bean->date_time_delivery = $date_time_delivery;
+		
+		//date time proposal sent
+		$date_time_sent = $oss_timedate->convertDBDateForDisplay($this->bean->date_time_sent, $this->bean->delivery_timezone, true);
+		$this->bean->date_time_sent = $date_time_sent;
+		
+		//date time proposal received
+		$date_time_received = $oss_timedate->convertDBDateForDisplay($this->bean->date_time_received, $this->bean->delivery_timezone, true);
+		$this->bean->date_time_received = $date_time_received;
+		
+		//date time proposal opened
+		$date_time_opened = $oss_timedate->convertDBDateForDisplay($this->bean->date_time_opened, $this->bean->delivery_timezone, true);
+		$this->bean->date_time_opened = $date_time_opened;
+		
+		
+		// Manage Proposal Verified Radio button
+		$proposal_yes_chk = '';
+		$proposal_no_chk = '';
+		if($this->bean->proposal_verified == 1){
+			$proposal_yes_chk = 'checked';
+		}
+		if($this->bean->proposal_verified == 2){
+			$proposal_no_chk = 'checked';
+		}
+		
+		if($this->bean->proposal_verified == 2 && $this->bean->verify_email_sent == 1){
+			$this->ss->assign('verify_proposal_sent',1);
+		}
+		
+		$this->ss->assign('proposal_delivery_mrthod',$this->bean->proposal_delivery_method);
+		
+		$this->ss->assign('proposal_yes_chk',$proposal_yes_chk);
+		$this->ss->assign('proposal_no_chk',$proposal_no_chk);
+		$this->ss->assign('verify_proposal',$this->bean->proposal_verified);
+			
+		if($_REQUEST['show_alert'] == 1){
+			echo <<<EOQ
+            <script type="text/javascript">
+		
+			var mySimpleDialog ='';		
+			function getSimpleDialog(){
+			    if (typeof(mySimpleDialog) != 'undefined' && mySimpleDialog != ''){
+			        mySimpleDialog.destroy(); 
+			    }
+			        mySimpleDialog = new YAHOO.widget.SimpleDialog("dlg", { 
+			        width: "40em", 
+			        effect:{
+			            effect: YAHOO.widget.ContainerEffect.FADE,
+			            duration: 0.25
+			        }, 
+			        fixedcenter: true,
+			        modal: true,
+			        visible: false,
+			        draggable: false
+			    });
+			        
+			    mySimpleDialog.setHeader("Warning!");
+			    mySimpleDialog.cfg.setProperty("icon", YAHOO.widget.SimpleDialog.ICON_WARN);
+			    return mySimpleDialog;
+			}
+					
+			var handleYes = function(){
+			    this.hide();
+			    return false;
+			}
+
+			var dd =getSimpleDialog();
+			mySimpleDialog.setBody(SUGAR.language.get('AOS_Quotes','MSG_MODIFY_VERIFY_WARNING').replace('\\\',''));
+			var myButtons = [{ text: 'OK', handler: handleYes }];
+			mySimpleDialog.cfg.queueProperty('buttons', myButtons);
+			mySimpleDialog.render(document.body);
+			mySimpleDialog.show();
+					
+			</script>
+EOQ;
+		}
+		//delete cache template
+		require_once('include/TemplateHandler/TemplateHandler.php');
+		$this->th = new TemplateHandler();
+		$this->th->ss =& $this->ss;
+		$this->tpl = 'include/DetailView/DetailView.tpl';
+		$this->focus = $this->bean;
+		$this->th->deleteTemplate($this->module, 'DetailView');
+		
+ 		parent::display();
+ 	}
+ 	
+ 	public function setAccountProviewLink(&$focus){
+ 	
+ 		if($focus->account_proview_url != '')
+ 		{
+ 			$focus->account_proview_url = $focus->account_proview_url;
+ 			if (preg_match('/^[^:\/]*:\/\/.*/', $focus->account_proview_url)) {
+ 				$focus->account_proview_url= $focus->account_proview_url;
+ 			} else {
+ 				$focus->account_proview_url = 'http://' . $focus->account_proview_url;
+ 			}
+ 	
+ 			$focus->account_proview_url = '<a href="javascript:void(0)" onclick="window.open(\''.$focus->account_proview_url.'	\',\'\',\'width=600,height=500\')" /><img src="custom/themes/default/images/proview_icon.gif" border="0"/></a>';
+ 		}
+ 		else{
+ 			$focus->account_proview_url = '';
+ 			//$focus->account_proview_url = '<a href="javascript:void(0)" /><img src="custom/themes/default/images/proview_icon.gif" border="0"/></a>';
+ 		}
+ 	
+ 		return $focus->account_proview_url;
+ 	}
+}
+

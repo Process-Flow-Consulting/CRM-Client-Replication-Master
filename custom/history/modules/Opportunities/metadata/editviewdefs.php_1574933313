@@ -1,0 +1,246 @@
+<?php
+$viewdefs ['Opportunities'] = 
+array (
+  'EditView' => 
+  array (
+    'templateMeta' => 
+    array (
+      'maxColumns' => '2',
+      'widths' => 
+      array (
+        0 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+        1 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+      ),
+      'javascript' => '{$PROBABILITY_SCRIPT}',
+      'useTabs' => true,
+      'tabDefs' => 
+      array (
+        'LBL_EDITVIEW_PANEL5' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL2' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL1' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+        ),
+      ),
+      'syncDetailEditViews' => true,
+    ),
+    'panels' => 
+    array (
+      'lbl_editview_panel5' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'name',
+          ),
+          1 => 
+          array (
+            'name' => 'date_closed',
+          ),
+        ),
+        1 => 
+        array (
+          0 => 'sales_stage',
+          1 => 
+          array (
+            'name' => 'bid_due_timezone',
+            'label' => 'LBL_BID_DUE_TIMEZONE',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'amount',
+          ),
+          1 => 'assigned_user_name',
+        ),
+        3 => 
+        array (
+          0 => 
+          array (
+            'name' => 'is_archived',
+            'comment' => 'STATUS OF PROJECT OPPORTUNITY',
+            'label' => 'LBL_ARCHIVE',
+          ),
+          1 => '',
+        ),
+      ),
+      'lbl_editview_panel2' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'jjwg_maps_address_c',
+            'label' => 'LBL_JJWG_MAPS_ADDRESS',
+          ),
+          1 => 'lead_source',
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_state',
+            'label' => 'LBL_LEAD_STATE',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_received',
+            'label' => 'LBL_LEAD_RECEIVED',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_county',
+            'label' => 'LBL_LEAD_COUNTY',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_structure',
+            'label' => 'LBL_LEAD_STRUCTURE',
+          ),
+        ),
+        3 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_city',
+            'label' => 'LBL_LEAD_CITY',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_type',
+            'label' => 'LBL_LEAD_TYPE',
+          ),
+        ),
+        4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_zip_code',
+            'label' => 'LBL_LEAD_ZIP_CODE',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_owner',
+            'label' => 'LBL_LEAD_OWNER',
+          ),
+        ),
+        5 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_project_status',
+            'label' => 'LBL_LEAD_PROJECT_STATUS',
+          ),
+          1 => '',
+        ),
+        6 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_start_date',
+            'label' => 'LBL_LEAD_START_DATE',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_square_footage',
+            'label' => 'LBL_LEAD_SQUARE_FOOTAGE',
+          ),
+        ),
+        7 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_end_date',
+            'label' => 'LBL_LEAD_END_DATE',
+          ),
+          1 => '',
+        ),
+        8 => 
+        array (
+          0 => '',
+          1 => '',
+        ),
+        9 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_contact_no',
+            'label' => 'LBL_LEAD_CONTACT_NO',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_stories_below_grade',
+            'label' => 'LBL_LEAD_STORIES_BELOW_GRADE',
+          ),
+        ),
+        10 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_number_of_buildings',
+            'label' => 'LBL_LEAD_NUMBER_OF_BUILDINGS',
+          ),
+          1 => 
+          array (
+            'name' => 'lead_stories_above_grade',
+            'label' => 'LBL_LEAD_STORIES_ABOVE_GRADE',
+          ),
+        ),
+        11 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_valuation',
+            'label' => 'LBL_LEAD_VALUATION',
+          ),
+          1 => 'probability',
+        ),
+        12 => 
+        array (
+          0 => 
+          array (
+            'name' => 'lead_scope_of_work',
+            'label' => 'LBL_LEAD_SCOPE_OF_WORK',
+          ),
+        ),
+      ),
+      'lbl_editview_panel1' => 
+      array (
+        0 => 
+        array (
+          0 => '',
+          1 => 
+          array (
+            'name' => 'custom_field_2',
+            'label' => 'LBL_CUSTOM_FIELD_2',
+          ),
+        ),
+      ),
+    ),
+  ),
+);
+;
+?>

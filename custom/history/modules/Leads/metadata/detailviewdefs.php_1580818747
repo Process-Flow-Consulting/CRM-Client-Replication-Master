@@ -1,0 +1,237 @@
+<?php
+// created: 2012-07-25 14:27:33
+$viewdefs = array (
+  'Leads' => 
+  array (
+    'DetailView' => 
+    array (
+      'templateMeta' => 
+      array (
+        'form' => 
+        array (
+          'buttons' => 
+          array (
+          	0 =>
+          	array (
+          		'customCode' => '<input title="{$MOD.LBL_CONVERTLEAD_TITLE}"  type="button" class="button" onClick="document.location=\'index.php?module=Leads&action=review_opportunity&record={$fields.id.value}\'" name="convert" value="{$MOD.LBL_CONVERTLEAD}">',
+          	),
+          	1 =>
+          	array (
+          		'customCode' => '{if  $bean->aclAccess("edit") && $bean->aclAccess("delete") && $fields.parent_lead_id.value eq $fields.id.value}
+                  <input title="{$APP.LBL_DUP_MERGE}" accessKey="M" class="button" onclick="this.form.return_module.value=\'\'; this.form.return_action.value=\'DetailView\'; this.form.return_id.value=\'{$id}\'; this.form.action.value=\'deduping\'; this.form.module.value=\'Leads\';" type="submit" name="Merge" value="{$APP.LBL_DUP_MERGE}">{/if} ',
+          	),
+          	2 => 'EDIT',
+            3 => array(
+            	'customCode' => '{if $bean->aclAccess("delete")}<input type="submit" class="button" name="delete_button"  id="delete_button" value="{$APP.LBL_DELETE}">{/if}',
+            ),
+          ),
+          //'headerTpl'=>'custom/modules/Leads/tpls/DetailViewHeader.tpl',
+        ),
+         'maxColumns' => '2',
+        'useTabs' => false,
+        'widths' => 
+        array (
+          0 => 
+          array (
+            'label' => '10',
+            'field' => '30',
+          ),
+          1 => 
+          array (
+            'label' => '10',
+            'field' => '30',
+          ),
+        ),
+        'includes' => 
+        array (
+          0 => 
+          array (
+            'file' => 'modules/Leads/Lead.js',
+          ),
+        ),
+        'syncDetailEditViews' => true,
+      ),
+      'panels' => 
+      array (
+        'LBL_CONTACT_INFORMATION' => 
+        array (
+          0 => 
+          array (
+            0 => 
+            array (
+              'name' => 'project_lead_id',
+              'label' => 'LBL_PROJECT_LEAD_ID',
+            ),
+            1 => 
+            array (
+              'name' => 'project_title',
+              'label' => 'LBL_PROJECT_TITLE',
+            ),
+          ),
+          1 => 
+          array (
+            0 => 
+            array (
+              'name' => 'received',
+              'label' => 'LBL_RECEIVED',
+            ),
+            1 => 'status',
+          ),
+          2 => 
+          array (
+            0 => 
+            array (
+              'name' => 'address',
+              'label' => 'LBL_LOCATION',
+              'customCode' => '{if $fields.address.value neq ""}{$fields.address.value},{/if} {if $fields.city.value neq ""}{$fields.city.value}, {/if}{$fields.state.value} {$fields.zip_code.value}{if $fields.county.value neq ""}<br>({$fields.county.value}){/if}',
+            ),
+            1 => 
+            array (
+              'name' => 'type',
+              'label' => 'LBL_TYPE_STRUCTURE',
+              'customCode' => '{if $type neq ""}{$type} / {/if}{$fields.structure.value}',
+            ),
+          ),
+          3 => 
+          array (
+            0 => 
+            array (
+              'name' => 'pre_bid_meeting',
+              'label' => 'LBL_PRE_BID_MEETING',
+            ),
+            1 => 
+            array (
+              'name' => 'project_status',
+              'comment' => 'STATUS OF PROJECT',
+              'label' => 'LBL_PROJECT_STATUS',
+            ),
+          ),
+          4 => 
+          array (
+            0 => 
+            array (
+              'name' => 'asap',
+              'label' => 'LBL_ASAP',
+            ),
+            1 => 
+            array (
+              'name' => 'owner',
+              'comment' => 'OWNER OF LEAD',
+              'label' => 'LBL_OWNER',
+            ),
+          ),
+          5 => 
+          array (
+            0 => 
+            array (
+              'name' => 'bids_due',
+              'label' => 'LBL_BIDS_DUE',
+            ),
+            1 => 
+            array (
+              'name' => 'start_date',
+              'label' => 'LBL_START_DATE',
+            ),
+          ),
+          6 => 
+          array (
+            0 => 
+            array (
+              'name' => 'bid_due_timezone',
+              'label' => 'LBL_BID_DUE_TIMEZONE',
+            ),
+            1 => 
+            array (
+              'name' => 'end_date',
+              'label' => 'LBL_END_DATE',
+            ),
+          ),
+          7 => 
+          array (
+            0 => 
+            array (
+              'name' => 'contact_no',
+              'label' => 'LBL_CONTACT_NO',
+            ),
+            1 => 
+            array (
+              'name' => 'valuation',
+              'label' => 'LBL_VALUATION',
+              'customCode' => '{if $fields.valuation.value neq "0"}{$fields.valuation.value|number_format:2}{/if}',
+            ),
+          ),
+          9 => 
+          array (
+            0 => 
+            array (
+              'name' => 'lead_name',
+              'studio' => 'visible',
+              'label' => 'LBL_LEAD_PARENT',
+            ),
+            1 => 
+            array (
+              'name' => 'lead_source',
+            ),
+          ),
+        ),
+        'lbl_detailview_panel2' => 
+        array (
+          0 => 
+          array (
+            0 => 
+            array (
+              'name' => 'union_c',
+              'customLabel' => '{$MOD.LBL_LABOR_TYPE}',
+              'customCode' => '<input type="checkbox" name="union_c" id="union_c" value="1" {if $fields.union_c.value==1}checked="checked"{/if} disabled >&nbsp;{$MOD.LBL_UNION}&nbsp;&nbsp;<input type="checkbox" name="non_union" id="non_union" value="1" {if $fields.non_union.value==1}checked="checked"{/if} disabled>&nbsp;{$MOD.LBL_NON_UNION}&nbsp;&nbsp;<input type="checkbox" name="prevailing_wage" id="prevailing_wage" value="1"  {if $fields.prevailing_wage.value==1}checked="checked"{/if} disabled>&nbsp;{$MOD.LBL_PREVAILING_WAGE}',
+            ),
+            1 => '',
+          ),
+        ),
+        'lbl_editview_panel1' => 
+        array (
+          0 => 
+          array (
+            0 => 
+            array (
+              'name' => 'number_of_buildings',
+              'label' => 'LBL_NUMBER_OF_BUILDINGS',
+            ),
+            1 => 
+            array (
+              'name' => 'square_footage',
+              'label' => 'LBL_SQUARE_FOOTAGE',
+            ),
+          ),
+          1 => 
+          array (
+            0 => 
+            array (
+              'name' => 'stories_above_grade',
+              'label' => 'LBL_STORIES_ABOVE_GRADE',
+            ),
+            1 => 
+            array (
+              'name' => 'stories_below_grade',
+              'label' => 'LBL_STORIES_BELOW_GRADE',
+            ),
+          ),
+          2 => 
+          array (             
+            array (
+              'name' => 'scope_of_work',
+              'label' => 'LBL_SCOPE_OF_WORK',
+            ),            
+          ),
+        ),
+        'LBL_PANEL_ASSIGNMENT' => 
+        array (
+          0 => 
+          array (
+            0 => 'description',
+          ),
+        ),
+      ),
+    ),
+  ),
+);
+appendFieldsOnViews($editView=array(),$viewdefs['Leads']['DetailView'],$searchDefs=array(),$listViewDefs=array(),$searchFields=array(),'Leads','DetailView');

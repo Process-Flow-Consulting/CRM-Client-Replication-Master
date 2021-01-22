@@ -1,0 +1,267 @@
+<?php
+$viewdefs ['Leads'] = 
+array (
+  'EditView' => 
+  array (
+    'templateMeta' => 
+    array (
+      'form' => 
+      array (
+        'hidden' => 
+        array (
+          0 => '<input type="hidden" name="prospect_id" value="{if isset($smarty.request.prospect_id)}{$smarty.request.prospect_id}{else}{$bean->prospect_id}{/if}">',
+          1 => '<input type="hidden" name="account_id" value="{if isset($smarty.request.account_id)}{$smarty.request.account_id}{else}{$bean->account_id}{/if}">',
+          2 => '<input type="hidden" name="contact_id" value="{if isset($smarty.request.contact_id)}{$smarty.request.contact_id}{else}{$bean->contact_id}{/if}">',
+          3 => '<input type="hidden" name="opportunity_id" value="{if isset($smarty.request.opportunity_id)}{$smarty.request.opportunity_id}{else}{$bean->opportunity_id}{/if}">',
+        ),
+        'buttons' => 
+        array (
+          0 => 'SAVE',
+          1 => 'CANCEL',
+        ),
+      ),
+      'maxColumns' => '2',
+      'widths' => 
+      array (
+        0 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+        1 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+      ),
+      'javascript' => '<script type="text/javascript" language="Javascript">function copyAddressRight(form)  {ldelim} form.alt_address_street.value = form.primary_address_street.value;form.alt_address_city.value = form.primary_address_city.value;form.alt_address_state.value = form.primary_address_state.value;form.alt_address_postalcode.value = form.primary_address_postalcode.value;form.alt_address_country.value = form.primary_address_country.value;return true; {rdelim} function copyAddressLeft(form)  {ldelim} form.primary_address_street.value =form.alt_address_street.value;form.primary_address_city.value = form.alt_address_city.value;form.primary_address_state.value = form.alt_address_state.value;form.primary_address_postalcode.value =form.alt_address_postalcode.value;form.primary_address_country.value = form.alt_address_country.value;return true; {rdelim} </script>',
+      'useTabs' => false,
+      'tabDefs' => 
+      array (
+        'LBL_CONTACT_INFORMATION' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL2' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL1' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_PANEL_ASSIGNMENT' => 
+        array (
+          'newTab' => false,
+          'panelDefault' => 'expanded',
+        ),
+      ),
+      'syncDetailEditViews' => false,
+    ),
+    'panels' => 
+    array (
+      'LBL_CONTACT_INFORMATION' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'project_lead_id',
+            'label' => 'LBL_PROJECT_LEAD_ID',
+          ),
+          1 => 'lead_source',
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'project_title',
+            'label' => 'LBL_PROJECT_TITLE',
+          ),
+          1 => 
+          array (
+            'name' => 'received',
+            'label' => 'LBL_RECEIVED',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'address',
+            'label' => 'LBL_ADDRESS',
+          ),
+          1 => 'status',
+        ),
+        3 => 
+        array (
+          0 => 
+          array (
+            'name' => 'state',
+            'comment' => 'STATE OF LEAD',
+            'label' => 'LBL_STATE',
+          ),
+          1 => '',
+        ),
+        4 => 
+        array (
+          0 => 
+          array (
+            'name' => 'county',
+            'studio' => 'visible',
+            'label' => 'LBL_COUNTY',
+          ),
+          1 => 
+          array (
+            'name' => 'type',
+            'comment' => 'TYPE OF LEAD',
+            'label' => 'LBL_TYPE',
+          ),
+        ),
+        5 => 
+        array (
+          0 => 
+          array (
+            'name' => 'city',
+            'label' => 'LBL_CITY',
+          ),
+          1 => 
+          array (
+            'name' => 'owner',
+            'comment' => 'OWNER OF LEAD',
+            'label' => 'LBL_OWNER',
+          ),
+        ),
+        6 => 
+        array (
+          0 => 
+          array (
+            'name' => 'zip_code',
+            'label' => 'LBL_ZIP_CODE',
+          ),
+          1 => '',
+        ),
+        7 => 
+        array (
+          0 => 
+          array (
+            'name' => 'pre_bid_meeting',
+            'studio' => 
+            array (
+              'required' => true,
+              'no_duplicate' => true,
+            ),
+            'label' => 'LBL_PRE_BID_MEETING',
+          ),
+          1 => 
+          array (
+            'name' => 'start_date',
+            'label' => 'LBL_START_DATE',
+          ),
+        ),
+        8 => 
+        array (
+          0 => 
+          array (
+            'name' => 'asap',
+            'label' => 'LBL_ASAP',
+          ),
+          1 => 
+          array (
+            'name' => 'end_date',
+            'label' => 'LBL_END_DATE',
+          ),
+        ),
+        9 => 
+        array (
+          0 => 
+          array (
+            'name' => 'bids_due',
+            'studio' => 
+            array (
+              'required' => true,
+              'no_duplicate' => true,
+            ),
+            'label' => 'LBL_BIDS_DUE',
+          ),
+          1 => 
+          array (
+            'name' => 'contact_no',
+            'label' => 'LBL_CONTACT_NO',
+          ),
+        ),
+        10 => 
+        array (
+          0 => 
+          array (
+            'name' => 'bid_due_timezone',
+            'label' => 'LBL_BID_DUE_TIMEZONE',
+          ),
+          1 => 
+          array (
+            'name' => 'valuation',
+            'label' => 'LBL_VALUATION',
+          ),
+        ),
+      ),
+      'lbl_editview_panel2' => 
+      array (
+        0 => 
+        array (
+          0 => '',
+          1 => '',
+        ),
+      ),
+      'lbl_editview_panel1' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'number_of_buildings',
+            'label' => 'LBL_NUMBER_OF_BUILDINGS',
+          ),
+          1 => 
+          array (
+            'name' => 'square_footage',
+            'label' => 'LBL_SQUARE_FOOTAGE',
+          ),
+        ),
+        1 => 
+        array (
+          0 => 
+          array (
+            'name' => 'stories_above_grade',
+            'label' => 'LBL_STORIES_ABOVE_GRADE',
+          ),
+          1 => 
+          array (
+            'name' => 'stories_below_grade',
+            'label' => 'LBL_STORIES_BELOW_GRADE',
+          ),
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'scope_of_work',
+            'label' => 'LBL_SCOPE_OF_WORK',
+          ),
+          1 => '',
+        ),
+      ),
+      'LBL_PANEL_ASSIGNMENT' => 
+      array (
+        0 => 
+        array (
+          0 => 'description',
+        ),
+      ),
+    ),
+  ),
+);
+;
+?>

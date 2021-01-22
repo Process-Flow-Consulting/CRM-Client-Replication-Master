@@ -1,0 +1,55 @@
+<?php
+//ini_set('display_errors',1);
+$cmd = "/usr/local/zend/bin/php -f PullBBH.php getLeads > /dev/null 2>&1 & echo $!;";
+
+$process_path = '../upload/process/';
+$lock_file = $process_path.'process_lock';
+$status_file = $process_path.'import_status';
+
+// Check lock file is exists
+if (file_exists($lock_file)) {
+    // check pid
+    $content = file_get_contents($lock_file);
+    $content = explode("_", $content);
+    $pid = $content[0];
+    $start_time = $content[1];
+    $current_time = time();
+    // var_dump($pid);
+    if(posix_kill($pid, 0)) {
+        /**
+         * Check process start time, If process take more than 30 min then
+         * current process will be killed and start new process.
+         */
+        if (($current_time - $start_time) > 1800) {
+            // Kill the Process.
+            posix_kill($pid, 9);
+            // Start New Process.
+            runCommand($cmd, $lock_file);
+            echo 'start';
+        }else{
+        	echo 'running';
+        }
+    } else {
+        // Run the command and write pid in a file.
+        runCommand($cmd, $lock_file, $status_file);
+        echo 'start';
+    }
+} else {
+    // Run the command and write pid in a file.
+    runCommand($cmd, $lock_file, $status_file);
+    echo 'start';
+}
+function runCommand($cmd, $lock_file, $status_file)
+{
+    $pid = exec($cmd, $output);
+    $current_time = time();
+    $file_text = $pid . "_" . $current_time;
+    $fp = fopen($lock_file, "w");
+    fwrite($fp, $file_text);
+    fclose($fp);
+    $fp1 = fopen($status_file, "w");
+    fwrite($fp1, '0|0');
+    fclose($fp1);
+}
+
+?>

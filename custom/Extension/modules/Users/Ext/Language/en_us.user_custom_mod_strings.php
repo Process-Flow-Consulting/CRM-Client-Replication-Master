@@ -1,0 +1,61 @@
+<?php
+//THIS FILE IS AUTO GENERATED, DO NOT MODIFY
+$mod_strings['LBL_BBWIZ_HELP_MSG'] = 'The Admin / Master allows full access and control over all CRM functionality. Through the Admin / Master you are able to set up master lead filters, team relationships and customize the user interface. ';
+$mod_strings['LBL_BBWIZ_TITLE'] = 'The Blue Book Building & Construction Network CRM.';
+$mod_strings['LBL_TEAM_MANAGER_INFO'] = '<b>Team Manager </b>:<slot>The team manager role allows full access to the lead, opportunity and client database for </br>employees assigned to the team manager. In addition, the team manager can assign lead, opportunities and <br>utilities as well as the reporting functionality specific to their assigned employees. However, the team </br>manager role does not have the ability to modify admin settings.</slot>';
+$mod_strings['LBL_FULL_PIPELINE_INFO'] = '<b>Full Pipeline Access </b>: <slot>This role allows full access to the lead, opportunity and client database</br> assigned to the user without the ability to modify admin settings.</slot>';
+$mod_strings['LBL_LEAD_REVIEWER_INFO'] = '<b>Lead Review and Distributor</b>: <slot>This role allows a team member access exclusively to the project lead </br>database for the purpose of determining which project leads should be converted to opportunities </br>for the sales / estimating staff to bid.';
+$mod_strings['LBL_OPPORTUNITY_REVIEWER_INFO'] = '<b>Opportunity and Proposal manager</b> : <slot>This role allows the user access only to the projects that have been </br>determined as bid / sales opportunities. This role provides the ability to review and fulfill all tasks </br>associated with opportunity review and proposal submission.';
+$mod_strings['ERROR_USER_COUNT'] = 'Please select users as per the allowed limit.';
+$mod_strings['ERROR_NO_USER_SELECTED'] = 'Please select number of users to be created against a role.';
+$mod_strings['LBL_TEAM_MGR'] = 'Team Manager';
+$mod_strings['LBL_FULL_PIPELINE'] = 'Full Pipeline Access';
+$mod_strings['LBL_LEAD_REVIEW'] = 'Lead Review and Distributor';
+$mod_strings['LBL_OPP_REVIEW'] = 'Opportunity and Proposal manager';
+$mod_strings['LBL_WIZARD_SKIP'] = 'Skip';
+$mod_strings['LBL_CREATE_USER'] = 'Create User(s)';
+$mod_strings['LBL_ERROR_USER_NAME_EXISTS'] = 'Username is not available.';
+$mod_strings['LBL_STATE_FILTER'] = 'State';
+$mod_strings['LBL_COUNTY_FILTER'] = 'County';
+$mod_strings['LBL_ZIP_FILTER'] = 'Zip Code';
+$mod_strings['LBL_TYPE_FILTER'] = 'Type';
+$mod_strings['LBL_CLASSIFICATION_FILTER'] = 'Classification';
+$mod_strings['LBL_LABOR_FILTER'] = 'Labor';
+//$mod_strings['LBL_USER_FILTER_NOTE'] = 'As the administrator, you have the ability to choose which projects / opportunities your users will be able to see. Please choose a user from the dropdown and set the selected filters below.';
+$mod_strings['LBL_USER_FILTER_NOTE'] = 'As the administrator, you have the ability to choose which project/opportunities your users will be able to see. To begin please select if your organization would like to distribute leads by Project (location,classification) or by Client (location, classification). ';
+$mod_strings['LBL_USER_SELECT_INFO'] = 'Please choose a user from the dropdown and set the selected filters below.';
+$mod_strings['LBL_USER_TM_INFO'] = 'Please select user(s) if any.which will be assigned as an employee.';
+$mod_strings['LBL_USER_LBL'] = 'Users';
+$mod_strings['LBL_GEO_FILTER'] = 'Apply the selected geographical filters to ';
+$mod_strings['LBL_USER_FILTER_FINISH'] = 'Finish';
+$mod_strings['LBL_USER_FILTER_NEXT'] = 'Next';
+$mod_strings['LBL_USER_FILTERS_TITLE'] = 'User Filters';
+$mod_strings['ERROR_USER_LIMIT_EXCEED'] = 'User limit has been reached to max allowed users.';
+$mod_strings['ERROR_PACKAGE_EXPIRED'] = 'Package expired, Please contact support.';
+$mod_strings['ERROR_INVALID_EMAIL'] = "Please enter a valid email address.";
+$mod_strings['MSG_ALL_USER_FILTER_SAVED'] ='All user filters has been saved, You will be redirected to Dashboard .';
+$mod_strings['CNF_FILTER_CHANGED'] ='<p> You have elected to switch the assignment of project leads and opportunities from %f% to %t% . This change will reset all filters you have currently assigned. </p><br/><br/><p>To continue, click OK and select the new filters for your team. If you navigate away from the user filter screen before clicking "Finish" for the last user your changes will not be made. These changes will apply for all new project leads and opportunities.<br/><br/> If you have any questions please contact support at 888-303-2243.</p>';
+
+$mod_strings['LBL_BBWIZ_TITLE_ADDITIONAL_USER'] = '<slot>Congratulations you have successfully created the Admin Project Pipeline Building and Construction Network CRM User!</slot><br/>To allow your team to experience the powerful customization and integration of the "Project Pipeline", your company will be allowed <br/>to create up to 3 additional users during your free trial. <br/>Please review the following roles and select up to 3 additional users.';
+
+$mod_strings['LBL_ADMIN_INFO'] =  '<b>Administrator </b>: ';
+$mod_strings['LBL_ADMIN'] = 'Administrator';
+$mod_strings['LBL_ZIP'] = 'Zip';
+$mod_strings['LBL_COMPANY'] = 'Company Name';
+$mod_strings['LBL_REMINDER_TEXT'] = 'Set a default for reminders for calls and meetings. Pop-up notifications appear for all invitees using Project Pipeline. Email reminders are sent to all invitees.';
+
+$mod_strings['LBL_WIZARD_WELCOME'] = 'Click <b>Next</b> to configure a few basic settings for using Project Pipeline.';
+$mod_strings['LBL_WIZARD_WELCOME_NOSMTP']=$mod_strings['LBL_WIZARD_WELCOME'] ;
+$mod_strings['LBL_WIZARD_PERSONALINFO_DESC'] = 'Provide information about yourself. The information you provide about yourself will be visible to other Project Pipeline users.<br />Fields marked with <span class="required">*</span> are required.';
+$mod_strings['LBL_WIZARD_LOCALE_DESC'] = 'Specify your time zone and how you would like dates, currencies and names to appear in Project Pipeline.';
+$mod_strings['LBL_WIZARD_FINISH_TITLE'] = 'You are ready to use Project Pipeline.';
+$mod_strings['LBL_CONST_REL_MGMT'] = 'Construction Relationship Management';
+$mod_strings['LBL_MY_CLS_TXT'] = '<p>Thank you for choosing Project Pipeline.</p><p>To help you identify which Project Leads are actually Opportunities for your company.</p><p>Project Pipeline allows you to filter what type of companies you want displayed on project leads based on their classifications.</p><p>Basically, the types of companies you usually sell your products and services to.</p><p>Please select the "Classifications" that fit your "Target Classification(s)".</p>';
+$mod_strings['LBL_ALL_FIELDS_REQUIRED'] = 'All Fields are Mandatory.';
+$mod_strings['LBL_NO_TNC'] = '<b>Warning!</b> <br><br>You have attempted to log into Project Pipeline without accepting the Blue Book Network’s Terms of Use and Privacy Policy. Please review the Terms of Use / Privacy Policy by following the link on the log in screen and accept by checking the box. If you have any questions please contact customer support at 888-303-2243. Thank You.';
+$mod_strings['LBL_INACTIVE_INSTANCE'] = 'This instance is inactive. Please contact customer support at 888-303-2243. Thank You.';
+$mod_strings['LBL_FOR_CLIENTS_CHK'] = 'Apply to Clients/Client Contacts';
+$mod_strings['LBL_ERROR_NO_CHANGE'] = 'No change detected.';
+$mod_strings['LBL_NO_GEO_FILTER_DEFINED'] = 'Please click "Ok" to set Geo filters for the instance.';
+$mod_strings['LBL_MY_ROLES_TXT'] = '<p>Thank you for choosing Project Pipeline.</p><p>To help you identify which Project Leads are actually Opportunities for your company.</p><p>Project Pipeline allows you to filter what type of companies you want displayed on project leads based on their roles.</p><p>Basically, the types of companies you usually sell your products and services to.</p><p>Please select the "Roles" that fit your "Role(s)".</p>';
+$mod_strings['LBL_ROLES_FILTER'] = 'Roles';

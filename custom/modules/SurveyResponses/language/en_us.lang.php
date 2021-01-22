@@ -1,0 +1,6 @@
+<?php
+// created: 2019-11-27 10:19:58
+$mod_strings = array (
+  'LBL_SURVEYRESPONSES_ACCOUNTS_FROM_ACCOUNTS_TITLE' => 'Client',
+  'LBL_SURVEYRESPONSES_CONTACTS_FROM_CONTACTS_TITLE' => 'Client Contact',
+);

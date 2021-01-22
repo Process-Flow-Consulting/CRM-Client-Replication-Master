@@ -1,0 +1,37 @@
+<?php
+$mod_strings['LBL_EDITVIEW_PANEL1'] = 'Other';
+$mod_strings['LBL_DETAILVIEW_PANEL1'] = 'Schedule Delivery';
+$mod_strings['LBL_SHIP_TO_ACCOUNT'] = 'Ship to Client';
+$mod_strings['LBL_SHIP_TO_CONTACT'] = 'Ship to Client Contact';
+$mod_strings['LBL_BILL_TO_ACCOUNT'] = 'Bill to Client';
+$mod_strings['LBL_BILL_TO_CONTACT'] = 'Bill to Client Contact';
+$mod_strings['LBL_ACCOUNT_NAME'] = 'Clients'; 
+$mod_strings['LBL_LIST_ACCOUNT_NAME'] = 'Client Name'; 
+$mod_strings['LBL_PROPOSAL_VERIFIED'] = 'Proposal Verified';
+$mod_strings['LBL_LIST_AMOUNT_USDOLLAR'] = 'Amount';
+$mod_strings['LBL_DATE_TIME_DELIVERY_LV'] = 'Delivery';
+$mod_strings['LBL_PROPOSAL_VERIFIED_LV'] = 'Verified';
+$mod_strings['LBL_PROPOSAL_VERIFIED_DV'] = 'Proposal Verified?:';
+$mod_strings['LBL_VERIFY_EMAIL_SENT'] = 'Verify Email Sent';
+$mod_strings['LBL_TIMEZONE_DATE_TIME_DELIVERY'] = 'Delivery Time Zone';
+$mod_strings['LBL_BILLING_ACCOUNT_ID'] = 'Billing Account ID';
+$mod_strings['LBL_PDF_SALES_COMPANY'] = 'Project:';
+$mod_strings['LBL_PDF_SALES_CONTACT'] = 'From:';
+$mod_strings['LBL_PDF_SALES_ADDRESS'] = 'Address:';
+$mod_strings['LBL_PDF_BILLING_ADDRESS'] = ' To';
+$mod_strings['LBL_IS_PROPOSAL_MODIFIED'] = 'Is Proposal modified ?';
+$mod_strings['LBL_PROPOSAL_SENT_COUNT'] = 'Proposal Sent Count';
+$mod_strings['LBL_PROPOSAL_VERSION'] = 'Proposal Version';
+$mod_strings['LBL_VERIFIED_DATE'] = 'Proposal Verified Date';
+$mod_strings['LBL_VERIFY_PROPOSALS'] = 'Verify Proposals';
+$mod_strings['LBL_PROPOSAL_AMOUNT'] = 'Proposal Amount';
+$mod_strings['LBL_LIST_QUOTE_NUM'] = 'Number';
+$mod_strings['LBL_LIST_QUOTE_NAME'] = 'Subject';
+$mod_strings['LBL_PROPOSAL_TRACKER_SUBPANEL_TITLE'] = 'Proposal Tracker';
+$mod_strings['LBL_LINE_ITEM_INFORMATION'] = 'Line Items';
+$mod_strings['LBL_LIST_GRAND_TOTAL'] = 'Grand Total';
+$mod_strings['LBL_ALTERNATES_INFORMATION'] = 'Alternates';
+$mod_strings['LBL_VIEW_PDF_BUTTON_TITLE'] = 'Print as PDF';
+$mod_strings['LBL_VIEW_PDF_BUTTON_LABEL'] = 'Print as PDF';
+$mod_strings['LBL_HELPTEXT_MULTIPLE_EMAIL'] = 'Use comma as separator to add multiple emails.';
+?>

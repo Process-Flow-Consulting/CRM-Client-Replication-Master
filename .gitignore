@@ -1,0 +1,4 @@
+*.log
+upload
+*.sql
+modules/AOD_Index/Index

@@ -1,0 +1,42 @@
+<?php
+$dictionary['Call']['fields']['team_set_id'] = array(
+    'name' => 'team_set_id',
+    'vname' => 'Team Set ID',
+    'type' => 'varchar',
+    'massupdate' => 0,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => true,
+    'reportable' => true,
+    'len' => '36',
+    'size' => '20',
+);
+$dictionary['Call']['fields']['team_id'] = array(
+    'name' => 'team_id',
+    'vname' => 'Team ID',
+    'type' => 'varchar',
+    'massupdate' => 0,
+    'comments' => '',
+    'help' => '',
+    'importable' => 'true',
+    'duplicate_merge' => 'disabled',
+    'duplicate_merge_dom_value' => '0',
+    'audited' => true,
+    'reportable' => true,
+    'len' => '36',
+    'size' => '20',
+);
+$dictionary['Call']['fields']['type']=array(
+		'name' => 'type',
+		'vname' => 'LBL_TYPE',
+		'type' => 'enum',
+		'len' => 255,
+		'comment' => 'Call type (Bluebook Call Type)',
+		'options' => 'custom_call_type_list',
+		'default'	=> '',
+		'massupdate' => false,
+		'required' => true,
+);

@@ -1,0 +1,340 @@
+<?php
+//require_once('modules/Leads/LeadsListViewSmarty.php');
+require_once('custom/include/common_functions.php');
+require_once 'include/MVC/View/views/view.list.php';
+require_once 'custom/modules/Leads/CustomListViewSmarty.php';
+require_once 'custom/modules/Leads/CustomListViewData.php';
+require_once('custom/include/SearchForm/PlOppSearchForm2.php');
+require_once 'custom/modules/Leads/bbProjectLeads.php';
+class LeadsViewList extends ViewList
+{
+    /**
+     * @see ViewList::preDisplay()
+     */
+    public function preDisplay()
+    {
+        require_once('modules/AOS_PDF_Templates/formLetter.php');
+        formLetter::LVPopupHtml('Leads');
+        
+
+        $this->lv = new CustomListViewSmarty();
+    	$this->lv->quickViewLinks  = false;
+    	$this->lv->lvd = new CustomListViewData();
+    	//to allow browser's back button for search
+    	header('Expires: -1');                
+        header( 'Cache-Control: must-revalidate, post-check=3600, pre-check=3600' );
+		//parent::preDisplay();
+
+        //$this->lv = new LeadsListViewSmarty();
+    }
+	function display() {
+    	echo "<style>
+				.yui-ac-content{
+					width: auto;
+				}
+			</style>";
+  
+        $this->bean = new bbProjectLeads(); 
+        //fix -- county not popuate inn save search
+       /*  if(isset($_REQUEST['saved_search_select']) && !empty($_REQUEST['saved_search_select']) ){
+        	$savedSearch = new SavedSearch();
+        	$retrieveSavedSearch = $savedSearch->retrieveSavedSearch($_REQUEST['saved_search_select']);
+        	$savedSearchOptions = $savedSearch->populateRequest();
+        }else{
+        	unset($_SESSION['LastSavedView'][$this->module]);
+        }
+         */
+        //if there are counties specified in advance search then show them as selected
+        if(isset($_REQUEST['county_id_advanced'])){
+        	$SELECTED_COUNTIES = json_encode($_REQUEST['county_id_advanced']);	
+		}else{			
+			$SELECTED_COUNTIES = json_encode(array(''));
+		}
+
+		$pull_from_menu = 0;
+		if(isset($_REQUEST['pull_project'])){
+			$pull_from_menu = 1;
+		}
+		
+		$min_one_bidder = 0;
+		if(isset($_REQUEST['min_one_bidder'])){
+			$min_one_bidder=1;
+		}
+		
+        parent::display();
+        
+        /*if(isset($_REQUEST['no_lead'])){
+        	echo '<script type="text/javascript">
+        		ajaxStatus.showStatus("No new or modified project leads are available.");        		
+        		</script>';
+        }*/
+       
+        
+        echo <<<EQQ
+   <script type='text/javascript' src="include/javascript/overlibmws.js"></script>
+   <script type='text/javascript'>
+      var pull_from_menu = '$pull_from_menu';
+      var min_one_bidder = $min_one_bidder;     
+      
+      var selectedCounty = JSON.parse('$SELECTED_COUNTIES');
+		
+      YUI().use('node-base','io',"selector-css3",'event',function (Y){
+      		
+      		function loadCounties(){ 
+      			
+      			ajaxStatus.showStatus(SUGAR.language.get('app_strings', 'LBL_LOADING'));
+      			
+      			postParam = new Array;
+      			
+      			postParam  = $('#state_advanced').val();
+      			
+      			if(postParam != null){
+	      			
+      				//get Counties
+					var callback = {
+					    success:function(o){
+      		
+      							$('#county_id_advanced').html(o.responseText);       							
+								
+      		
+							}
+					};
+      				
+					stPostState	= '&state_advacne[]='+postParam.join('&state_advacne[]=');
+					stPostState	= '&county_id[]='+selectedCounty.join('&county_id[]=');
+					var connectionObject = YAHOO.util.Connect.asyncRequest ("POST", "index.php?entryPoint=CountyAjaxCall&multisel=1&to_pdf=1&state_advacne[]="+postParam.join('&state_advacne[]='), callback,stPostState);
+      			}
+      			ajaxStatus.hideStatus();
+        	}
+      });
+      
+		
+// Pull project lead through AJAX
+
+ YAHOO.util.Event.onDOMReady(function(){
+//Create a YUI instance using io-base module.
+
+YUI().use("io-base","node", function(Y) {
+
+	/* Y.one("#pull_leads").on('click',function(){
+    	min_one_bidder=0;
+    	initiatePulling();
+    });
+	Y.one("#pull_leads_ico").on('click',function(){
+    	min_one_bidder=0;
+    	initiatePulling();
+    }); */
+	
+	if(pull_from_menu==1){	        	
+	    initiatePulling();  		    	
+	}
+
+	if(min_one_bidder==1){
+    	initiatePulling();
+    }
+    
+    function checkProcessStatus(){
+		var uri = "cmdscripts/process_status.php";
+		var cfg = {
+	    method: 'POST',
+	    data: 'user=yahoo',
+	    headers: {
+	        'Content-Type': 'application/json',
+	    },
+	    on: {
+	        start: function(){
+    			
+    		},
+	        complete:function(id,o){		        		        				
+						var res = o.responseText;       					
+        				var res_str = res.split('_');
+        				var import_text_arr = res_str[1].split('|');
+        				var inserted_pl = trim(import_text_arr[0]);
+        				var updated_pl = trim(import_text_arr[1]);        				      					
+        				if(inserted_pl == '0' && updated_pl == '0'){
+    						var msg_text = 'Data streaming is in progress...';        					
+    					}else{
+    						var msg_text = 'Project Lead Imported: '+inserted_pl+' Project Lead Updated: '+updated_pl;
+    					}         				
+        				if(trim(res_str[0])=='running'){       						
+        					ajaxStatus.showStatus(msg_text);
+        					return true;
+            			}else if(trim(res_str[0])=='finished'){							
+        					ajaxStatus.showStatus(inserted_pl+' Project Lead Imported and '+ updated_pl +' Project Lead Updated Successfully.');
+        					setInterval(function(){    							
+        						window.location.href="index.php?module=Leads&action=index&n=" + new Date().getTime();;	
+    						},5000);
+        					
+							return false;
+						}       			       				       				
+        				
+		        	},
+	        end: function(){   					
+    		}
+	    }	    
+	    
+	};    
+    var request = Y.io(uri,cfg);
+		
+	}   
+    
+    
+	function initiatePulling(){
+	var isSuccess=false;	
+    //var uri = "index.php?entryPoint=PullProjectLeadsNew&lead_count=1&one_bidder="+min_one_bidder;
+	//var uri = "index.php?entryPoint=ProjectLeadDirectInsert&one_bidder="+min_one_bidder;
+	//var uri = "index.php?entryPoint=PullLeadCommand&one_bidder="+min_one_bidder;
+	//var uri = "index.php?entryPoint=PullBBH&process=getLeads";	
+	var uri = "cmdscripts/PullBBHCommand.php?process=getLeads";
+
+    // Define a function to handle the response data.
+       var cfg = {
+	    method: 'POST',
+	    data: 'user=yahoo',
+	    headers: {
+	        'Content-Type': 'application/json',
+	    },
+	    on: {
+	        start: function(){
+    			ajaxStatus.showStatus("Please wait while populating leads...");
+    		},
+	        complete:function(id,o){
+		        		//how many project leads we have  
+        				var res = JSON.stringify(o.responseText);
+						var res = o.responseText;
+        				var res = trim(res);			
+        				if(res=='success'){							
+							window.location.href="index.php?module=Leads&action=index";
+            			}else if(res=='start'){
+							ajaxStatus.showStatus('Please wait while populating leads...');
+							setInterval(function(){checkProcessStatus()},5000);							
+							return false;
+						}else if(res=='running'){
+							ajaxStatus.showStatus('Please wait while populating leads...');
+							setInterval(function(){checkProcessStatus()},5000);							
+							return false;    
+    					}else{
+							ajaxStatus.showStatus(res);
+							return false;    
+						}      				       				
+        				
+		        	},
+	        end: function(){   					
+    		}
+	    }
+	    
+	    
+	};    
+    var request = Y.io(uri,cfg);
+	}
+
+});
+
+});
+
+var mySimpleDialog ='';
+function getSimpleDialog(params){	
+	if (typeof(mySimpleDialog) != 'undefined' && mySimpleDialog != ''){		
+		mySimpleDialog.destroy();		 
+	}
+		mySimpleDialog = new YAHOO.widget.SimpleDialog(params.id, { 
+	    width: params.width+'px', 
+	    effect:{
+	        effect: YAHOO.widget.ContainerEffect.FADE,
+	        duration: 0.25
+	    },
+	    //fixedcenter: true,
+        x: params.x,
+        y: 40,
+	    modal: true,
+	    visible: false,
+	    draggable: true
+	});
+	    
+	mySimpleDialog.setHeader(params.message);
+	mySimpleDialog.cfg.setProperty('icon', YAHOO.widget.SimpleDialog.ICON_WARN);
+	return mySimpleDialog;
+}
+
+var mySimpleDialog1 ='';
+function getSimpleDialog1(params){	
+	if (typeof(mySimpleDialog1) != 'undefined' && mySimpleDialog1 != ''){		
+		mySimpleDialog1.destroy();		 
+	}
+		mySimpleDialog1 = new YAHOO.widget.SimpleDialog(params.id, { 
+	    width: params.width+'px', 
+	    effect:{
+	        effect: YAHOO.widget.ContainerEffect.FADE,
+	        duration: 0.25
+	    }, 
+	    //fixedcenter: true,
+        x: params.x,
+        y: 40,
+	    modal: true,
+	    visible: false,
+	    draggable: true		
+	});
+	    
+	mySimpleDialog1.setHeader(params.message);
+	mySimpleDialog1.cfg.setProperty('icon', YAHOO.widget.SimpleDialog.ICON_WARN);
+	return mySimpleDialog1;
+} 
+                		
+     function showPopupBidBoard(lead_id){
+        $('#dlg1').find('.container-close').remove();
+		var params = Array();
+		params['id'] = 'dlg1';
+		params['message'] = 'Bid Board Updates';
+		params['width'] = '990';
+        //start -- center the modal
+        var windowWidth = $(window).width();
+        var blankPosition = parseInt(windowWidth) -  parseInt(params['width']);
+        if(blankPosition > 0){
+            var xCoordinate = (blankPosition / 2);
+            params['x'] = xCoordinate;
+	    }
+        //end -- center the modal
+		mySimpleDialog = getSimpleDialog(params);						 
+		mySimpleDialog.setBody('Loading...');	      
+	    mySimpleDialog.render(document.body);			
+	    mySimpleDialog.show();
+		
+		var callback = {
+    		success:function(o){    			
+				mySimpleDialog.setBody(o.responseText);
+    		}
+    	}
+		YAHOO.util.Connect.asyncRequest ('GET', 'index.php?module=Leads&action=relatedpl&to_pdf=true&lead_id='+lead_id, callback);
+	    return false;	       
+    }
+		
+	function showPLDetailModal(lead_id){   	
+        ajaxStatus.showStatus('Loading...');
+        
+		var callback = {
+    		success:function(o){	
+                ajaxStatus.hideStatus();		
+                showPopup(o.responseText,'Project Lead Details','98%');
+                /*iList = $('input[value='+lead_id+']').parent();
+                obAllTd = $(iList).siblings();
+                obAllTd.each(function(i,e){
+                val = $(e).html();
+                if(val.trim() == 'New'){ 
+                    $(e).html('Viewed')
+                }
+                })*/
+                val=$('#status_'+lead_id).html();
+                val=(val=='New')?'Viewed':val;
+                $('#status_'+lead_id).html(val);
+    		}
+    	}
+		YAHOO.util.Connect.asyncRequest ('GET', 'index.php?module=Leads&action=pldetails&to_pdf=true&lead_id='+lead_id, callback);
+		return false;
+    }
+		
+</script>	
+   
+EQQ;
+    }
+	
+}

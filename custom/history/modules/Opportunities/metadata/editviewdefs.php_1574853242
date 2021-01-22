@@ -1,0 +1,104 @@
+<?php
+$viewdefs ['Opportunities'] = 
+array (
+  'EditView' => 
+  array (
+    'templateMeta' => 
+    array (
+      'maxColumns' => '2',
+      'widths' => 
+      array (
+        0 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+        1 => 
+        array (
+          'label' => '10',
+          'field' => '30',
+        ),
+      ),
+      'javascript' => '{$PROBABILITY_SCRIPT}',
+      'useTabs' => true,
+      'tabDefs' => 
+      array (
+        'LBL_EDITVIEW_PANEL5' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL2' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+        ),
+        'LBL_EDITVIEW_PANEL1' => 
+        array (
+          'newTab' => true,
+          'panelDefault' => 'expanded',
+        ),
+      ),
+      'syncDetailEditViews' => true,
+    ),
+    'panels' => 
+    array (
+      'lbl_editview_panel5' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'name',
+          ),
+          1 => '',
+        ),
+        1 => 
+        array (
+          0 => 'sales_stage',
+          1 => '',
+        ),
+        2 => 
+        array (
+          0 => 
+          array (
+            'name' => 'amount',
+          ),
+          1 => 'assigned_user_name',
+        ),
+      ),
+      'lbl_editview_panel2' => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            'name' => 'jjwg_maps_address_c',
+            'label' => 'LBL_JJWG_MAPS_ADDRESS',
+          ),
+          1 => 'lead_source',
+        ),
+        1 => 
+        array (
+          0 => '',
+          1 => '',
+        ),
+        2 => 
+        array (
+          0 => '',
+          1 => 'probability',
+        ),
+      ),
+      'lbl_editview_panel1' => 
+      array (
+        0 => 
+        array (
+          0 => '',
+          1 => '',
+        ),
+      ),
+    ),
+  ),
+);
+;
+?>
